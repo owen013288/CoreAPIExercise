@@ -1,4 +1,5 @@
-﻿using CoreAPIExercise.Models;
+﻿using CoreAPIExercise.Dtos;
+using CoreAPIExercise.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -23,9 +24,24 @@ namespace CoreAPIExercise.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<TodoList> Get()
+        public IEnumerable<TodoListSelectDto> Get()
         {
-            return _context.TodoList.ToList();
+            var result = _context.TodoList
+                .Include(a => a.InsertEmployee)
+                .Include(a => a.UpdateEmployee)
+                .Select(a => new TodoListSelectDto
+                {
+                    Enable = a.Enable,
+                    InsertEmployeeName = a.InsertEmployee.Name,
+                    InsertTime = a.InsertTime,
+                    Name = a.Name,
+                    Orders = a.Orders,
+                    TodoId = a.TodoId,
+                    UpdateEmployeeName = a.UpdateEmployee.Name,
+                    UpdateTime = a.UpdateTime
+                });
+
+            return result;
         }
 
         /// <summary>
