@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+
 
 namespace CoreAPIExercise.Models
 {
@@ -26,7 +29,7 @@ namespace CoreAPIExercise.Models
         {
             modelBuilder.Entity<Division>(entity =>
             {
-                entity.Property(e => e.DivisionId).ValueGeneratedNever();
+                entity.Property(e => e.DivisionId).HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -35,7 +38,7 @@ namespace CoreAPIExercise.Models
 
             modelBuilder.Entity<Employee>(entity =>
             {
-                entity.Property(e => e.EmployeeId).ValueGeneratedNever();
+                entity.Property(e => e.EmployeeId).HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.Account).IsRequired();
 
@@ -52,7 +55,7 @@ namespace CoreAPIExercise.Models
 
                 entity.Property(e => e.JobTitle1)
                     .HasColumnName("JobTitle")
-                    .ValueGeneratedNever();
+                    .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -63,7 +66,7 @@ namespace CoreAPIExercise.Models
             {
                 entity.HasKey(e => e.TodoId);
 
-                entity.Property(e => e.TodoId).ValueGeneratedNever();
+                entity.Property(e => e.TodoId).HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.InsertTime).HasColumnType("datetime");
 
