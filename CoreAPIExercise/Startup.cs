@@ -1,15 +1,10 @@
+using CoreAPIExercise.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CoreAPIExercise
 {
@@ -26,6 +21,10 @@ namespace CoreAPIExercise
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            // using Microsoft.EntityFrameworkCore; => UseSqlServer
+            services.AddDbContext<Core3APIExerciseContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("Core3APIExercise")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
