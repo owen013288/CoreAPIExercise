@@ -47,6 +47,18 @@ namespace CoreAPIExercise.Models
                     .HasMaxLength(50);
 
                 entity.Property(e => e.Password).IsRequired();
+
+                entity.HasOne(d => d.Division)
+                    .WithMany(p => p.Employee)
+                    .HasForeignKey(d => d.DivisionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Employee_Division");
+
+                entity.HasOne(d => d.JobTitle)
+                    .WithMany(p => p.Employee)
+                    .HasForeignKey(d => d.JobTitleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Employee_JobTitle");
             });
 
             modelBuilder.Entity<JobTitle>(entity =>
@@ -75,6 +87,17 @@ namespace CoreAPIExercise.Models
                 entity.Property(e => e.UpdateEmployeeId).HasColumnName("UpdateEmployeeID");
 
                 entity.Property(e => e.UpdateTime).HasColumnType("datetime");
+
+                entity.HasOne(d => d.InsertEmployee)
+                    .WithMany(p => p.TodoListInsertEmployee)
+                    .HasForeignKey(d => d.InsertEmployeeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_TodoList_Employee");
+
+                entity.HasOne(d => d.UpdateEmployee)
+                    .WithMany(p => p.TodoListUpdateEmployee)
+                    .HasForeignKey(d => d.UpdateEmployeeId)
+                    .HasConstraintName("FK_TodoList_Employee1");
             });
 
             OnModelCreatingPartial(modelBuilder);

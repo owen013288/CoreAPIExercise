@@ -9,7 +9,14 @@ namespace CoreAPIExercise.Models
 {
     public partial class Division
     {
+        public Division()
+        {
+            Employee = new HashSet<Employee>();
+        }
+
         public Guid DivisionId { get; set; }
         public string Name { get; set; }
+
+        public virtual ICollection<Employee> Employee { get; set; }
     }
 }

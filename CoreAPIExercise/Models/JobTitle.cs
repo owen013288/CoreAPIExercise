@@ -9,7 +9,14 @@ namespace CoreAPIExercise.Models
 {
     public partial class JobTitle
     {
+        public JobTitle()
+        {
+            Employee = new HashSet<Employee>();
+        }
+
         public Guid JobTitle1 { get; set; }
         public string Name { get; set; }
+
+        public virtual ICollection<Employee> Employee { get; set; }
     }
 }
