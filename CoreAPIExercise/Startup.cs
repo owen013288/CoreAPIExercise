@@ -25,6 +25,9 @@ namespace CoreAPIExercise
             // using Microsoft.EntityFrameworkCore; => UseSqlServer
             services.AddDbContext<Core3APIExerciseContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Core3APIExercise")));
+
+            // ¤Þ¤J AutoMApper
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

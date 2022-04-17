@@ -1,4 +1,5 @@
-﻿using CoreAPIExercise.Dtos;
+﻿using AutoMapper;
+using CoreAPIExercise.Dtos;
 using CoreAPIExercise.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,9 +15,13 @@ namespace CoreAPIExercise.Controllers
     {
         private readonly Core3APIExerciseContext _context;
 
-        public TodoController(Core3APIExerciseContext context)
+        // using AutoMapper; => IMapper
+        private readonly IMapper _iMapper;
+
+        public TodoController(Core3APIExerciseContext context, IMapper iMapper)
         {
             _context = context;
+            _iMapper = iMapper;
         }
 
         /// <summary>
@@ -26,22 +31,30 @@ namespace CoreAPIExercise.Controllers
         [HttpGet]
         public IEnumerable<TodoListSelectDto> Get()
         {
+            //var result = _context.TodoList
+            //    .Include(a => a.InsertEmployee)
+            //    .Include(a => a.UpdateEmployee)
+            //    .Select(a => new TodoListSelectDto
+            //    {
+            //        Enable = a.Enable,
+            //        InsertEmployeeName = a.InsertEmployee.Name,
+            //        InsertTime = a.InsertTime,
+            //        Name = a.Name,
+            //        Orders = a.Orders,
+            //        TodoId = a.TodoId,
+            //        UpdateEmployeeName = a.UpdateEmployee.Name,
+            //        UpdateTime = a.UpdateTime
+            //    });
+
+            //return result;
+
+            // 改寫成AutoMapper形式
             var result = _context.TodoList
                 .Include(a => a.InsertEmployee)
-                .Include(a => a.UpdateEmployee)
-                .Select(a => new TodoListSelectDto
-                {
-                    Enable = a.Enable,
-                    InsertEmployeeName = a.InsertEmployee.Name,
-                    InsertTime = a.InsertTime,
-                    Name = a.Name,
-                    Orders = a.Orders,
-                    TodoId = a.TodoId,
-                    UpdateEmployeeName = a.UpdateEmployee.Name,
-                    UpdateTime = a.UpdateTime
-                });
+                .Include(a => a.UpdateEmployee);
 
-            return result;
+
+            return _iMapper.Map<IEnumerable<TodoListSelectDto>>(result);
         }
 
         /// <summary>
