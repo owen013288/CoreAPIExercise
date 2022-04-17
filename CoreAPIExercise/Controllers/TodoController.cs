@@ -29,7 +29,7 @@ namespace CoreAPIExercise.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<TodoListSelectDto> Get()
+        public IActionResult Get()
         {
             //var result = _context.TodoList
             //    .Include(a => a.InsertEmployee)
@@ -49,12 +49,20 @@ namespace CoreAPIExercise.Controllers
             //return result;
 
             // 改寫成AutoMapper形式
-            var result = _context.TodoList
+            var model = _context.TodoList
                 .Include(a => a.InsertEmployee)
-                .Include(a => a.UpdateEmployee);
+                .Include(a => a.UpdateEmployee)
+                /*.Where(a => a.Name == "qweasd")*/;
 
+            var result = _iMapper.Map<IEnumerable<TodoListSelectDto>>(model);
 
-            return _iMapper.Map<IEnumerable<TodoListSelectDto>>(result);
+            if (result == null || result.Count() == 0)
+            {
+                //Response.StatusCode = 404 // => 使用這個的話要回傳IEnumerable<TodoListSelectDto>;
+                return NotFound();
+            }
+
+            return Ok(result);
         }
 
         /// <summary>
